@@ -1,0 +1,7 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"D:/Projects/Pizaroo/Pizaroo/Pizaroo/Content/Arial20.spritefont","D:/Projects/Pizaroo/Pizaroo/Pizaroo/Content/bin/Windows/Arial20.xnb","FontDescriptionProcessor","SpriteFontContent",2005,70673,0.5684817
+"D:/Projects/Pizaroo/Pizaroo/Pizaroo/Content/Arial40.spritefont","D:/Projects/Pizaroo/Pizaroo/Pizaroo/Content/bin/Windows/Arial40.xnb","FontDescriptionProcessor","SpriteFontContent",2005,136209,0.13763
+"D:/Projects/Pizaroo/Pizaroo/Pizaroo/Content/Vehicle1.png","D:/Projects/Pizaroo/Pizaroo/Pizaroo/Content/bin/Windows/Vehicle1.xnb","TextureProcessor","Texture2DContent",30302,100365,0.0498651
+"D:/Projects/Pizaroo/Pizaroo/Pizaroo/Content/Vehicle2.png","D:/Projects/Pizaroo/Pizaroo/Pizaroo/Content/bin/Windows/Vehicle2.xnb","TextureProcessor","Texture2DContent",34734,160085,0.0189534
+"D:/Projects/Pizaroo/Pizaroo/Pizaroo/Content/Vehicle3.png","D:/Projects/Pizaroo/Pizaroo/Pizaroo/Content/bin/Windows/Vehicle3.xnb","TextureProcessor","Texture2DContent",20649,158489,0.0209434
+"D:/Projects/Pizaroo/Pizaroo/Pizaroo/Content/Vehicle4.png","D:/Projects/Pizaroo/Pizaroo/Pizaroo/Content/bin/Windows/Vehicle4.xnb","TextureProcessor","Texture2DContent",51809,248085,0.095742
