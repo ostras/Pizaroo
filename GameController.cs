@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections;
-
+using System.Collections.Generic;
+using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+
 
 namespace Pizaroo
 {
@@ -234,7 +236,7 @@ namespace Pizaroo
                 
                 foreach (int val in scores)
                 {
-                    string finalScoreMsg = pos.ToString() + ". " + val.ToString();
+                    string finalScoreMsg = pos.ToString() + ". " + val;
                     pizarooView.spriteBatch.DrawString(pizarooView.labelFont20, finalScoreMsg, new Vector2(screenWidth / 2 - 80, scoreYPos), Color.Black);
 
                     scoreYPos = scoreYPos + 40;
@@ -252,9 +254,37 @@ namespace Pizaroo
 
         void CollisionHappenedListener()
         {
-            scores.Add(score);
-            scores.Sort();
-            scores.Reverse();
+            try
+            {
+                IEnumerable<String> lines = File.ReadLines("C:\\Users\\Pedro\\Desktop\\scores.txt");
+
+                scores.Clear();
+
+                foreach (string sc in lines)
+                {
+                    scores.Add(Int32.Parse(sc));
+                }
+
+                scores.Add(score);
+                scores.Sort();
+                scores.Reverse();
+
+                FileStream fs = File.Open("C:\\Users\\Pedro\\Desktop\\scores.txt", FileMode.Append);
+
+                StreamWriter stream = new StreamWriter(fs);
+                stream.WriteLine(score);
+
+                stream.Close();
+
+            } catch (System.IO.IOException ioe)
+            {
+                string message = "Scores file doesn't exist";
+                string caption = "Error opening file";
+
+                // Displays the MessageBox
+                MessageBox.Show(message, caption, new List<string> { "OK"});
+            }
+
             score = 0;
         }
     }
