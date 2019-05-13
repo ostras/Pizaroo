@@ -5,7 +5,7 @@ using System.IO;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-
+using Pizaroo.Model;
 
 namespace Pizaroo
 {
@@ -18,9 +18,8 @@ namespace Pizaroo
         PizarooView pizarooView;
 
         int laneOffset = 0;
-        
-        private PlayerVehicle player;
-        private AIVehicle vehicle1, vehicle2, vehicle3, vehicle4, vehicle5;
+
+        private IVehicle player, vehicle1, vehicle2, vehicle3, vehicle4, vehicle5;
         private int screenWidth = 0;
         private int screenHeight = 0;
         int score = 0;
@@ -94,7 +93,7 @@ namespace Pizaroo
         protected override void UnloadContent()
         {
             // TODO: Unload any non ContentManager content here
-            
+
         }
 
         /// <summary>
@@ -104,7 +103,8 @@ namespace Pizaroo
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
-            if (IsActive == false) {
+            if (IsActive == false)
+            {
                 return;  //our window is not active don't update
             }
 
@@ -114,14 +114,17 @@ namespace Pizaroo
             KeyboardState newKeyboardState = Keyboard.GetState();
 
             //process keyboard events                           
-            if (newKeyboardState.IsKeyDown(Keys.Left) && !oldKeyboardState.IsKeyDown(Keys.Left)) {
+            if (newKeyboardState.IsKeyDown(Keys.Left) && !oldKeyboardState.IsKeyDown(Keys.Left))
+            {
                 playerMovedInfo(Keys.Left);
             }
-            if (newKeyboardState.IsKeyDown(Keys.Right) && !oldKeyboardState.IsKeyDown(Keys.Right)) {
+            if (newKeyboardState.IsKeyDown(Keys.Right) && !oldKeyboardState.IsKeyDown(Keys.Right))
+            {
                 playerMovedInfo(Keys.Right);
             }
             // Restart Game
-            if (newKeyboardState.IsKeyDown(Keys.Space) && !oldKeyboardState.IsKeyDown(Keys.Space)) {
+            if (newKeyboardState.IsKeyDown(Keys.Space) && !oldKeyboardState.IsKeyDown(Keys.Space))
+            {
                 collision = false;
                 score = 0;
             }
@@ -140,7 +143,7 @@ namespace Pizaroo
 
             // Collision detection
             //collision = false;
-            if(player.X == 75 && (player.Y - vehicle1.Y) < 200)
+            if (player.X == 75 && (player.Y - vehicle1.Y) < 200)
             {
                 collision = true;
                 vehicle1.Y = 10;
@@ -193,15 +196,16 @@ namespace Pizaroo
                 pizarooView.spriteBatch.Begin();
 
                 // Player vehicle
-                pizarooView.DrawPlayerVehicle(player);
+                pizarooView.DrawVehicle(0, player);
 
                 // AI vehicles
-                if(!collision) {
-                    pizarooView.DrawAIVehicle(11, vehicle1);
-                    pizarooView.DrawAIVehicle(14, vehicle2);
-                    pizarooView.DrawAIVehicle(15, vehicle3);
-                    pizarooView.DrawAIVehicle(13, vehicle4);
-                    pizarooView.DrawAIVehicle(12, vehicle5);
+                if (!collision)
+                {
+                    pizarooView.DrawVehicle(11, vehicle1);
+                    pizarooView.DrawVehicle(14, vehicle2);
+                    pizarooView.DrawVehicle(15, vehicle3);
+                    pizarooView.DrawVehicle(13, vehicle4);
+                    pizarooView.DrawVehicle(12, vehicle5);
                 }
 
                 // Score
@@ -233,7 +237,7 @@ namespace Pizaroo
 
                 int scoreYPos = 60;
                 int pos = 1;
-                
+
                 foreach (int val in scores)
                 {
                     string finalScoreMsg = pos.ToString() + ". " + val;
@@ -254,21 +258,35 @@ namespace Pizaroo
 
         void CollisionHappenedListener()
         {
+            IEnumerable<String> lines = null;
+
             try
             {
-                IEnumerable<String> lines = File.ReadLines("C:\\Users\\Pedro\\Desktop\\scores.txt");
+                lines = File.ReadLines("C:\\Users\\Pedro\\Desktop\\scores.txt");
 
-                scores.Clear();
+            }
+            catch (System.IO.FileNotFoundException fnfe)
+            {
+                string message = "Scores file doesn't exist";
 
-                foreach (string sc in lines)
-                {
-                    scores.Add(Int32.Parse(sc));
-                }
+                // Displays the MessageBox
+                MessageBox.Show(message, fnfe.Message, new List<string> { "OK" });
+                Exit();
+            }
 
-                scores.Add(score);
-                scores.Sort();
-                scores.Reverse();
+            scores.Clear();
 
+            foreach (string sc in lines)
+            {
+                scores.Add(Int32.Parse(sc));
+            }
+
+            scores.Add(score);
+            scores.Sort();
+            scores.Reverse();
+
+            try
+            {
                 FileStream fs = File.Open("C:\\Users\\Pedro\\Desktop\\scores.txt", FileMode.Append);
 
                 StreamWriter stream = new StreamWriter(fs);
@@ -276,13 +294,14 @@ namespace Pizaroo
 
                 stream.Close();
 
-            } catch (System.IO.IOException ioe)
+            }
+            catch (System.IO.IOException ioe)
             {
-                string message = "Scores file doesn't exist";
-                string caption = "Error opening file";
+                string message = "Error writing scores to file";
 
                 // Displays the MessageBox
-                MessageBox.Show(message, caption, new List<string> { "OK"});
+                MessageBox.Show(message, ioe.Message, new List<string> { "OK" });
+                Exit();
             }
 
             score = 0;

@@ -6,17 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Pizaroo
+namespace Pizaroo.Model
 {
-    public class AIVehicle {
-
-        public float X { get; set; } //x position of vehicle on screen
-        public float Y { get; set; } //y position of vehicle on screen
-        public float Width { get; set; } //width of vehicle
-        public float Height { get; set; } //height of vehicle
-        public float ScreenWidth { get; set; } //width of game screen
-
-        public Texture2D imgVehicle { get; set; }  //cached image of the vehicle
+    public class AIVehicle : IVehicle
+    {
 
         public AIVehicle(float x, float y, float screenWidth, PizarooView pizarooView, int vehicleNum)
         {
@@ -38,5 +31,12 @@ namespace Pizaroo
             Height = imgVehicle.Height;
             ScreenWidth = screenWidth;
         }
+
+        public float X { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float Y { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float Width { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float Height { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float ScreenWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Texture2D imgVehicle { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
     }
 }

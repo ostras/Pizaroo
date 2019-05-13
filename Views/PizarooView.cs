@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Content;
+using Pizaroo.Model;
 
 namespace Pizaroo
 {
@@ -42,18 +43,16 @@ namespace Pizaroo
             spriteBatch = new SpriteBatch(graphicsDevice);
         }
 
-        public void DrawPlayerVehicle(PlayerVehicle vehicle)
+        public void DrawVehicle(int move, IVehicle vehicle)
         {
-            spriteBatch.Draw(vehicle.imgVehicle, new Vector2(vehicle.X, vehicle.Y), null, Microsoft.Xna.Framework.Color.White, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0);
-        }
-
-        public void DrawAIVehicle(int move, AIVehicle vehicle)
-        {
-            vehicle.Y = vehicle.Y + move;
-            if (vehicle.Y > 1700)
-            {
-                vehicle.Y = -300;
+            if (vehicle is AIVehicle) {
+                vehicle.Y = vehicle.Y + move;
+                if (vehicle.Y > 1700)
+                {
+                    vehicle.Y = -300;
+                }
             }
+
             spriteBatch.Draw(vehicle.imgVehicle, new Vector2(vehicle.X, vehicle.Y), null, Microsoft.Xna.Framework.Color.White, 0, new Vector2(0, 0), 1.0f, SpriteEffects.None, 0);
         }
 

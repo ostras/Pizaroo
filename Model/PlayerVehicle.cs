@@ -9,18 +9,10 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Content;
 
-namespace Pizaroo
+namespace Pizaroo.Model
 {
-    public class PlayerVehicle
+    public class PlayerVehicle : IVehicle
     {
-
-        public float X { get; set; } //x position of player on screen
-        public float Y { get; set; } //y position of player on screen
-        public float Width { get; set; } //width of player
-        public float Height { get; set; } //height of player
-        public float ScreenWidth { get; set; } //width of game screen
-
-        public Texture2D imgVehicle { get; set; }  //cached image of the player
         
         public PlayerVehicle(float x, float y, float screenWidth, PizarooView pizarooView)
         {
@@ -33,6 +25,13 @@ namespace Pizaroo
 
             GameController.playerMovedInfo += PlayerMovedListener;
         }
+
+        public float X { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float Y { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float Width { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float Height { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float ScreenWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public Texture2D imgVehicle { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
 
         public void MoveLeft()
         {
