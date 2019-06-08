@@ -26,12 +26,12 @@ namespace Pizaroo.Model
             GameController.playerMovedInfo += PlayerMovedListener;
         }
 
-        public float X { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public float Y { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public float Width { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public float Height { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public float ScreenWidth { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
-        public Texture2D imgVehicle { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+        public float X { get; set; }
+        public float Y { get; set; }
+        public float Width { get; set; }
+        public float Height { get; set; }
+        public float ScreenWidth { get; set; }
+        public Texture2D imgVehicle { get; set; }
 
         public void MoveLeft()
         {
