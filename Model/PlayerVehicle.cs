@@ -22,8 +22,6 @@ namespace Pizaroo.Model
             Width = imgVehicle.Width;
             Height = imgVehicle.Height;
             ScreenWidth = screenWidth;
-
-            GameController.playerMovedInfo += PlayerMovedListener;
         }
 
         public float X { get; set; }
@@ -49,7 +47,12 @@ namespace Pizaroo.Model
             }
         }
 
-        void PlayerMovedListener(Keys keyPressed)
+        public void ResetPosition()
+        {
+            Y = 10;
+        }
+
+        public void PlayerMovedListener(Keys keyPressed)
         {
             if (keyPressed == Keys.Left)
             {

@@ -19,7 +19,8 @@ namespace Pizaroo
 
         int laneOffset = 0;
 
-        private IVehicle player, vehicle1, vehicle2, vehicle3, vehicle4, vehicle5;
+        private PlayerVehicle playerVehicle;
+        private IVehicle vehicle1, vehicle2, vehicle3, vehicle4, vehicle5;
         private int screenWidth = 0;
         private int screenHeight = 0;
         int score = 0;
@@ -27,8 +28,9 @@ namespace Pizaroo
         ArrayList scores = new ArrayList();
 
         bool collision = false;
-        string collisionMsg = "Ouch!";
+        string gameOverMsg = "Game Over!";
         string scoreTableMsg = "Max Scores";
+        string playAgainMsg = "Press <SPACE> to play again!";
 
         private KeyboardState oldKeyboardState;
 
@@ -77,7 +79,8 @@ namespace Pizaroo
             //create game objects
             int vehicleX = 75; // Player initial position
             int vehicleY = screenHeight - 220;  // Vehicle position on the vertical axis
-            player = new PlayerVehicle(vehicleX, vehicleY, screenWidth, pizarooView);  // create the player
+            playerVehicle = new PlayerVehicle(vehicleX, vehicleY, screenWidth, pizarooView);  // create the player
+            playerMovedInfo += playerVehicle.PlayerMovedListener;
 
             vehicle1 = new AIVehicle(25, 10, screenWidth, pizarooView, 1);
             vehicle2 = new AIVehicle(275, 400, screenWidth, pizarooView, 2);
@@ -143,38 +146,38 @@ namespace Pizaroo
 
             // Collision detection
             //collision = false;
-            if (player.X == 75 && (player.Y - vehicle1.Y) < 200)
+            if (playerVehicle.X == 75 && (playerVehicle.Y - vehicle1.Y) < 200)
             {
                 collision = true;
-                vehicle1.Y = 10;
+                vehicle1.ResetPosition();
 
                 collisionHappenedInfo();
             }
-            else if (player.X == 325 && (player.Y - vehicle2.Y) < 200)
+            else if (playerVehicle.X == 325 && (playerVehicle.Y - vehicle2.Y) < 200)
             {
                 collision = true;
-                vehicle2.Y = 10;
+                vehicle2.ResetPosition();
 
                 collisionHappenedInfo();
             }
-            else if (player.X == 575 && (player.Y - vehicle3.Y) < 200)
+            else if (playerVehicle.X == 575 && (playerVehicle.Y - vehicle3.Y) < 200)
             {
                 collision = true;
-                vehicle3.Y = 10;
+                vehicle3.ResetPosition();
 
                 collisionHappenedInfo();
             }
-            else if (player.X == 825 && (player.Y - vehicle4.Y) < 200)
+            else if (playerVehicle.X == 825 && (playerVehicle.Y - vehicle4.Y) < 200)
             {
                 collision = true;
-                vehicle4.Y = 10;
+                vehicle4.ResetPosition();
 
                 collisionHappenedInfo();
             }
-            else if (player.X == 1075 && (player.Y - vehicle5.Y) < 200)
+            else if (playerVehicle.X == 1075 && (playerVehicle.Y - vehicle5.Y) < 200)
             {
                 collision = true;
-                vehicle5.Y = 10;
+                vehicle5.ResetPosition();
 
                 collisionHappenedInfo();
             }
@@ -196,7 +199,7 @@ namespace Pizaroo
                 pizarooView.spriteBatch.Begin();
 
                 // Player vehicle
-                pizarooView.DrawVehicle(0, player);
+                pizarooView.DrawVehicle(0, playerVehicle);
 
                 // AI vehicles
                 if (!collision)
@@ -232,10 +235,13 @@ namespace Pizaroo
                 pizarooView.spriteBatch.Begin();
 
 
-                // Scores
-                pizarooView.spriteBatch.DrawString(pizarooView.labelFont20, scoreTableMsg, new Vector2(screenWidth / 2 - 110, 20), Color.Black);
+                // Game over
+                pizarooView.spriteBatch.DrawString(pizarooView.labelFont40, gameOverMsg, new Vector2(screenWidth / 2 - 160, 20), Color.Red);
 
-                int scoreYPos = 60;
+                // Scores
+                pizarooView.spriteBatch.DrawString(pizarooView.labelFont20, scoreTableMsg, new Vector2(screenWidth / 2 - 110, 120), Color.Black);
+
+                int scoreYPos = 170;
                 int pos = 1;
 
                 foreach (int val in scores)
@@ -245,10 +251,11 @@ namespace Pizaroo
 
                     scoreYPos = scoreYPos + 40;
                     pos++;
+                    if (pos == 21) break;
                 }
 
-                // OUCH!!
-                //spriteBatch.DrawString(pizarooView.labelFont40, collisionMsg, new Vector2(screenWidth / 2 - 70, screenHeight / 2), Color.Red);
+                // Play Again
+                pizarooView.spriteBatch.DrawString(pizarooView.labelFont40, playAgainMsg, new Vector2(screenWidth / 2 - 350, 1100), Color.Black);
 
                 pizarooView.spriteBatch.End();
 
@@ -262,15 +269,12 @@ namespace Pizaroo
 
             try
             {
-                lines = File.ReadLines("C:\\Users\\Pedro\\Desktop\\scores.txt");
+                lines = File.ReadLines("scores.txt");
 
             }
             catch (System.IO.FileNotFoundException fnfe)
             {
-                string message = "Scores file doesn't exist";
-
-                // Displays the MessageBox
-                MessageBox.Show(message, fnfe.Message, new List<string> { "OK" });
+                pizarooView.HandleExceptionMessage("Scores file doesn't exist", fnfe);
                 Exit();
             }
 
@@ -287,7 +291,7 @@ namespace Pizaroo
 
             try
             {
-                FileStream fs = File.Open("C:\\Users\\Pedro\\Desktop\\scores.txt", FileMode.Append);
+                FileStream fs = File.Open("scores.txt", FileMode.Append);
 
                 StreamWriter stream = new StreamWriter(fs);
                 stream.WriteLine(score);
@@ -297,10 +301,7 @@ namespace Pizaroo
             }
             catch (System.IO.IOException ioe)
             {
-                string message = "Error writing scores to file";
-
-                // Displays the MessageBox
-                MessageBox.Show(message, ioe.Message, new List<string> { "OK" });
+                pizarooView.HandleExceptionMessage("Error writing scores to file", ioe);
                 Exit();
             }
 

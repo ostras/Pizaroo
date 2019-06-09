@@ -38,5 +38,19 @@ namespace Pizaroo.Model
         public float Height { get; set; }
         public float ScreenWidth { get; set; }
         public Texture2D imgVehicle { get; set; }
+
+        public void MoveVehicle(int move)
+        {
+            Y = Y + move;
+            if (Y > 1700)
+            {
+                Y = -300;
+            }
+        }
+
+        public void ResetPosition()
+        {
+            Y = 10;
+        }
     }
 }

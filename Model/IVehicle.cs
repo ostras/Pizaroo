@@ -17,5 +17,7 @@ namespace Pizaroo.Model
         float ScreenWidth { get; set; } //width of game screen
 
         Texture2D imgVehicle { get; set; }  //cached image of the vehicle
+
+        void ResetPosition();
     }
 }
